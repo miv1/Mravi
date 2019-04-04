@@ -1,8 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
 
 namespace Jalasoft.Kitti.Mravi
+
 {
+    using System;
+    using System.Collections.Generic;
     class Program
     {
         static void Main(string[] args)
@@ -10,10 +11,8 @@ namespace Jalasoft.Kitti.Mravi
             string pipe, endLine;
             double max = 0;
             double div = 0;
-            double sum = 0;
 
             int n = Int32.Parse(Console.ReadLine());
-
 
             List<int> aEndPipe = new List<int>();
             List<int> bEndPipe = new List<int>();
@@ -40,31 +39,24 @@ namespace Jalasoft.Kitti.Mravi
             for (int i = 0; i < tSuperPipe.Count; i++)
             {
                 if (tSuperPipe[i] == 1)
-                    div = Math.Sqrt(arrayAmount[i + 1]) / cFlow[i];
+                {
+                    double dd = Convert.ToDouble(cFlow[i]) / 100;
+                    double ee = Math.Sqrt(arrayAmount[i + 1]);
+                    div = ee / dd;
+                    //div = Math.Sqrt(arrayAmount[i + 1])/Convert.ToDouble(cFlow[i])/100;
+                }
                 else
                 {
-                double aa = arrayAmount[i + 1];
-                double bb = cFlow[i];
-                    div = arrayAmount[i + 1] / cFlow[i];
+                    double aa = arrayAmount[i + 1];
+                    double bb = Convert.ToDouble(cFlow[i]) / 100;
+                    div = aa / bb;
+                    //div = Convert.ToDouble(arrayAmount[i + 1])/ Convert.ToDouble(cFlow[i]) / 100;
                 }
-                   
+
                 if (div > max)
                     max = div;
             }
-
-            for (int i = 0; i < tSuperPipe.Count; i++)
-            {
-                if (max * cFlow[i] > 0)
-                    sum = max * cFlow[i];
-            }
-
-
-            //aEndPipe.Add(Int32.Parse(amountLiquid[1]));
-            //bEndPipe.Add(Int32.Parse(amountLiquid[2]));
-            //cFlow.Add(Int32.Parse(amountLiquid[2]));
-            //tSuperPipe.Add(Int32.Parse(amountLiquid[3]));
-
-
+            
         }
     }
 }
