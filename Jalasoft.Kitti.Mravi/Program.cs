@@ -12,9 +12,9 @@ namespace Jalasoft.Kitti.Mravi
             double max = 0;
             double div = 0;
             double sum = 0;
-            int i = 0;
+            double porcentage = 0;
             int n = Int32.Parse(Console.ReadLine());
-
+            int i = 0;
             List<int> aEndPipe = new List<int>();
             List<int> bEndPipe = new List<int>();
             List<int> cFlow = new List<int>();
@@ -39,9 +39,8 @@ namespace Jalasoft.Kitti.Mravi
             int index = aEndPipe[n - 2];
             i = n - 2;
             while (i > -1)
-            //for (i = n - 2; i > -1; i--)
             {
-                
+
                 for (int aux = 0; aux < i + 1; aux++)
                 {
                     if (index == aEndPipe[aux])
@@ -53,8 +52,7 @@ namespace Jalasoft.Kitti.Mravi
                         if (div > max)
                             max = div;
                     }
-                }               
-
+                }
                 if (index != aEndPipe[i])
                 {
                     for (int j = 0; j < i + 1; j++)
@@ -62,35 +60,13 @@ namespace Jalasoft.Kitti.Mravi
                         if (bEndPipe[j] == aEndPipe[index])
                             arrayAmount[j + 1] = max * 100;
                     }
-                  //  index = aEndPipe[i];
                     max = 0;
                     sw = true;
                 }
-                index = aEndPipe[ i];
- i--;
-
-
-
-                //if (index != aEndPipe[i])
-                //{
-                //    for (int j = 0; j < i + 1; j++)
-                //    {
-                //        if (bEndPipe[j] == aEndPipe[index])
-                //            arrayAmount[j + 1] = max * 100;
-                //    }
-                //    index = aEndPipe[i];
-                //    max = 0;
-                //    sw = true;
-                //}
-
-
-
-                //if (tSuperPipe[i] == 1)
-                //    div = (Math.Sqrt(arrayAmount[i + 1]) / (Convert.ToDouble(cFlow[i])));
-                //else
-                //    div = (arrayAmount[i + 1] / (Convert.ToDouble(cFlow[i])));
-                //if (div > max)
-                //    max = div;
+                    if (porcentage < max)
+                        porcentage = max;
+                index = aEndPipe[i];
+                i--;
             }
             i++;
             while (i < n - 1 && aEndPipe[i] == 1)
@@ -98,9 +74,9 @@ namespace Jalasoft.Kitti.Mravi
                 if (sw == true)
                 {
                     if (tSuperPipe[i] == 1)
-                        sum += Math.Sqrt(arrayAmount[i + 1]);
+                        sum += Math.Sqrt(cFlow[i] * porcentage);
                     else
-                        sum += arrayAmount[i + 1];
+                        sum += cFlow[i] * porcentage;
                 }
                 else
                     sum += max * (Convert.ToDouble(cFlow[i]));
