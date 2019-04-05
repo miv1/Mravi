@@ -6,6 +6,25 @@ namespace Jalasoft.Kitti.Mravi
     using System.Collections.Generic;
     class Program
     {
+        static bool VerifyNode(List<int> aEndPipe)
+        {
+            foreach (var item in aEndPipe)
+            {
+                if (item != 1)
+                    return false;
+            }
+            return true;
+        }
+        static double GetPercent(List<int> tSuperPipe, List<double> arrayAmount, List<int> cFlow, int aux)
+        {
+            double div = 0;
+            if (tSuperPipe[aux] == 1)
+                div = (Math.Sqrt(arrayAmount[aux + 1]) / (Convert.ToDouble(cFlow[aux])));
+            else
+                div = (arrayAmount[aux + 1] / (Convert.ToDouble(cFlow[aux])));
+            return div;
+        }
+
         static void Main(string[] args)
         {
             string pipe, endLine;
@@ -35,6 +54,24 @@ namespace Jalasoft.Kitti.Mravi
             {
                 arrayAmount.Add(Int32.Parse(item));
             }
+
+            if (VerifyNode(aEndPipe))
+            {
+                int count = cFlow.Count;
+                for (i = 0; i < count; i++)
+                {
+                    div = GetPercent(tSuperPipe, arrayAmount, cFlow, i);
+                    if (div > max)
+                        max = div;
+                }
+                foreach (var item in cFlow)
+                {
+                    sum += item * max;
+                }
+            }
+
+            else
+            { 
             bool sw = false;
             int index = aEndPipe[n - 2];
             i = n - 2;
@@ -45,10 +82,11 @@ namespace Jalasoft.Kitti.Mravi
                 {
                     if (index == aEndPipe[aux])
                     {
-                        if (tSuperPipe[aux] == 1)
-                            div = (Math.Sqrt(arrayAmount[aux + 1]) / (Convert.ToDouble(cFlow[aux])));
-                        else
-                            div = (arrayAmount[aux + 1] / (Convert.ToDouble(cFlow[aux])));
+                        div = GetPercent(tSuperPipe, arrayAmount, cFlow, aux);
+                        //if (tSuperPipe[aux] == 1)
+                        //    div = (Math.Sqrt(arrayAmount[aux + 1]) / (Convert.ToDouble(cFlow[aux])));
+                        //else
+                        //    div = (arrayAmount[aux + 1] / (Convert.ToDouble(cFlow[aux])));
                         if (div > max)
                             max = div;
                     }
@@ -63,8 +101,8 @@ namespace Jalasoft.Kitti.Mravi
                     max = 0;
                     sw = true;
                 }
-                    if (porcentage < max)
-                        porcentage = max;
+                if (porcentage < max)
+                    porcentage = max;
                 index = aEndPipe[i];
                 i--;
             }
@@ -81,6 +119,7 @@ namespace Jalasoft.Kitti.Mravi
                 else
                     sum += max * (Convert.ToDouble(cFlow[i]));
                 i++;
+            }
             }
             Console.Write(sum);
         }
